@@ -15,8 +15,13 @@ public func configure(_ app: Application) throws {
         tlsConfiguration: .none
     ), as: .mysql)
 
-    app.migrations.add(CreateTodo())
     app.migrations.add(CreateUser())
+    
+    switch app.environment {
+    case .testing:
+        app.passwords.use(.plaintext)
+    default: app.passwords.use(.bcrypt)
+    }
     
     // register routes
     try routes(app)
