@@ -6,16 +6,18 @@ import Vapor
 public func configure(_ app: Application) throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-
-    app.databases.use(.mysql(
-        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-        username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
-        password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
-        database: Environment.get("DATABASE_NAME") ?? "vapor_database"
+    
+    app.databases.use(DatabaseConfigurationFactory.mysql(
+        hostname: Environment.get("DATABASE_HOST") ?? "dev",
+        username: Environment.get("DATABASE_USERNAME") ?? "root",
+        password: Environment.get("DATABASE_PASSWORD") ?? "lammrulEz2020hehe",
+        database: Environment.get("DATABASE_NAME") ?? "laser",
+        tlsConfiguration: .none
     ), as: .mysql)
 
     app.migrations.add(CreateTodo())
-
+    app.migrations.add(CreateUser())
+    
     // register routes
     try routes(app)
 }
