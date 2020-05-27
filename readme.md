@@ -62,12 +62,6 @@ date: Mon, 18 May 2020 15:20:51 GMT
 Creating a user for the Lasertime service is as easy as a __POST__ request. No authentication is required to create a user at this stage.
 
 ### Request
-```http
-POST /user HTTP/1.1
-Host: api.lasertime.iron59.co.uk
-Content-Type: application/json
-Accept: */*
-```
 ```json
 {
     "username": "freddy",
@@ -79,13 +73,6 @@ Accept: */*
 ```
 
 ### Response
-```http
-HTTP/1.1 200 OK
-content-type: application/json; charset=utf-8
-content-length: 51
-connection: keep-alive
-date: Mon, 18 May 2020 15:03:27 GMT
-```
 ```json
 {
   "username": "freddy",
@@ -109,12 +96,6 @@ Parameter name | Description | Data type | Example | Default value
 **paid** | The ISO8601 formatted date/time at which the user paid for their lasertime | `String` | `"2020-02-24T11:21:00+00:00"` | `nil`
 
 ### Request
-```http
-POST /lasertime HTTP/1.1
-Host: api.lasertime.iron59.co.uk
-Content-Type: application/json
-Accept: */*
-```
 ```json
 {
     "duration": 2319,
@@ -133,4 +114,5 @@ Accept: */*
 ```
 
 # TODO 🗒
+- [ ] Allow updates to laser log
 - [ ] Allow updates to laser log
