@@ -131,3 +131,6 @@ Accept: */*
   "paid": "false"
 }
 ```
+
+# TODO 🗒
+- [ ] Allow updates to laser log
