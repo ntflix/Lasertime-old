@@ -1,0 +1,10 @@
+CREATE DATABASE IF NOT EXISTS laser;
+USE laser;
+CREATE TABLE IF NOT EXISTS lasertime (
+    id BINARY(16) NOT NULL PRIMARY KEY UNIQUE,
+    userID BINARY(16) NOT NULL,
+    cutTime DATETIME NOT NULL DEFAULT now(),
+    descript TEXT,
+    paid DATETIME,
+    duration INT NOT NULL
+);
