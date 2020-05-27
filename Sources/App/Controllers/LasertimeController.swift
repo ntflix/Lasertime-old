@@ -107,10 +107,10 @@ struct LasertimeController {
         }
                 
         return lasertime.save(on: req.db).map {[
-            "cutTime":lasertime.cutTime!.description,   // force unwrap because value is guaranteed to be set from the `if`
-            "descript":lasertime.descript ?? "",
-            "userID":lasertime.userID!.description,
-            "paid":lasertime.paid?.description ?? "false",
+            "cutTime": lasertime.cutTime!.description,   // force unwrap because value is guaranteed to be set from the `if`
+            "descript": lasertime.descript ?? "",
+            "userID": lasertime.userID!.description,
+            "paid": lasertime.paid?.description ?? "false",
             "duration": lasertime.duration.description
         ]}
     }

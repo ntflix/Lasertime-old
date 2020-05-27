@@ -68,14 +68,36 @@ struct UserController {
     func create(req: Request) throws -> EventLoopFuture<[String: String]> {
         let user = try req.content.decode(User.self)
         
+        // Should probably put the following into a function
+        
+        /// Checks whether the items supplied actually have values and are not just empty strings
+        let itemsWhichCannotBeEmpty: [String: String] = [
+            user.firstName: "First name",
+            user.username: "Username"
+        ]
+        
+        var missingItem: String?
+        
+        itemsWhichCannotBeEmpty.forEach { item in
+            if item.0.count == 0 {
+                missingItem = item.1
+            }
+        }
+        
+        if let _ = missingItem {
+            return req.eventLoop.makeFailedFuture(FluentError.missingField(name: missingItem!))
+        }
+        
+        /// Done checking. User supplied details seem OK 👍
+        
         do {
             if user.password.count < 8 {
-                // TODO: Implement *actual* password requirements checker
+                // TODO: Implement *actual* password requirements checker. Not urgent. We can trust our users for now ;)
                 return req.eventLoop.makeFailedFuture(Abort(.custom(code: 502, reasonPhrase: "Password must be at least 8 characters")))
             }
-            
             user.password = try Bcrypt.hash(user.password)
         } catch {
+            /// bcrypt hashing failed
             return req.eventLoop.makeFailedFuture(Abort(.badRequest))
         }
         

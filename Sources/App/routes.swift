@@ -26,7 +26,10 @@ func routes(_ app: Application) throws {
     
     // Allow user to update their own details
 //    userProtected.patch("user", use: userController.update)
+    
     // Allow user to delete themselves
+    // actually, not a good idea yet, as then the items in the lasertime table will not be linked to an existing user
+    
 //    userProtected.delete("user", use: userController.delete)
     
     
@@ -76,12 +79,12 @@ func routes(_ app: Application) throws {
     ///     • modify laser logs' details (mainly paid date)     🚦 on hold
     ///     • get list of all users with details (except password)     ✅
     ///     • view any user's details (except password)   ✅
-    ///     • add laser log in anyone's name
+    ///     • add laser log in anyone's name    ✅
     ///     • create user       ✅
     ///     • create admin ✅
     
     /// The server must:
-    ///     • enforce password requirements
-    ///     • verify email address
-    ///     • not accept empty strings as user details
+    ///     • enforce password requirements     🧩 not quite, just 8 chars for now
+    ///     • verify email address                      ❌ don't really need this, it's community-based
+    ///     • not accept empty strings as user details       ✅
 }
