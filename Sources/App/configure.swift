@@ -14,14 +14,11 @@ public func configure(_ app: Application) throws {
         database: Environment.get("DATABASE_NAME") ?? "laser",
         tlsConfiguration: .none
     ), as: .mysql)
-
-    app.migrations.add(CreateUser())
     
-    switch app.environment {
-    case .testing:
-        app.passwords.use(.plaintext)
-    default: app.passwords.use(.bcrypt)
-    }
+    app.migrations.add(CreateUser())
+    app.migrations.add(CreateLasertime())
+    
+    app.passwords.use(.bcrypt)
     
     // register routes
     try routes(app)
