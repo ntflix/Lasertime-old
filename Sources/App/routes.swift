@@ -27,7 +27,7 @@ func routes(_ app: Application) throws {
     // Allow user to update their own details
 //    userProtected.patch("user", use: userController.update)
     // Allow user to delete themselves
-    userProtected.delete("user", use: userController.delete)
+//    userProtected.delete("user", use: userController.delete)
     
     
 // MARK: - Admin operations
