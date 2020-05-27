@@ -115,4 +115,3 @@ Parameter name | Description | Data type | Example | Default value
 
 # TODO 🗒
 - [ ] Allow updates to laser log
-- [ ] Allow updates to laser log
