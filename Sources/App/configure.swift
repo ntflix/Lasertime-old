@@ -8,9 +8,9 @@ public func configure(_ app: Application) throws {
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     app.databases.use(DatabaseConfigurationFactory.mysql(
-        hostname: Environment.get("DATABASE_HOST") ?? "dev",
+        hostname: Environment.get("DATABASE_HOST") ?? "hostname",
         username: Environment.get("DATABASE_USERNAME") ?? "root",
-        password: Environment.get("DATABASE_PASSWORD") ?? "lammrulEz2020hehe",
+        password: Environment.get("DATABASE_PASSWORD") ?? "password",
         database: Environment.get("DATABASE_NAME") ?? "laser",
         tlsConfiguration: .none
     ), as: .mysql)
