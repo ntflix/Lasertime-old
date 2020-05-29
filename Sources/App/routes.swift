@@ -87,4 +87,6 @@ func routes(_ app: Application) throws {
     ///     • enforce password requirements     🧩 not quite, just 8 chars for now
     ///     • verify email address                      ❌ don't really need this, it's community-based
     ///     • not accept empty strings as user details       ✅
+    ///     • log interactions with the server (authenticated and attempts)
+    
 }

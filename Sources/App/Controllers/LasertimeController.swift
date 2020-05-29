@@ -42,7 +42,26 @@ struct LasertimeController {
         }
     }
     
-    func getUserLasertime(req: Request) throws -> EventLoopFuture<[[String: String]]> {
+//    func getUserLasertime(req: Request) throws -> EventLoopFuture<[[String: String]]> {
+//        guard let user = try? req.auth.require(User.self) else {    // safely unwrap userID
+//            throw FluentError.idRequired
+////            throw LasertimeControllerError.noID
+//        }
+//        return Lasertime.query(on: req.db)
+//            .filter(\.$userID == user.id!)
+//            .all()
+//            .mapEach { laser in
+//                [
+//                    "cutTime": laser.cutTime!.description,  // guaranteed to have a value
+//                    "id": laser.id!.description,
+//                    "descript": laser.descript ?? "",
+//                    "paid": laser.paid?.description ?? "",
+//                    "duration": laser.duration.description
+//                ]
+//        }
+//    }
+    
+    func getUserLasertime(req: Request) throws -> EventLoopFuture<[Lasertime]> {
         guard let user = try? req.auth.require(User.self) else {    // safely unwrap userID
             throw FluentError.idRequired
 //            throw LasertimeControllerError.noID
@@ -50,17 +69,7 @@ struct LasertimeController {
         return Lasertime.query(on: req.db)
             .filter(\.$userID == user.id!)
             .all()
-            .mapEach { laser in
-                [
-                    "cutTime": laser.cutTime!.description,  // guaranteed to have a value
-                    "id": laser.id!.description,
-                    "descript": laser.descript ?? "",
-                    "paid": laser.paid?.description ?? "",
-                    "duration": laser.duration.description
-                ]
-        }
     }
-    
     /*
     func update(req: Request) throws -> EventLoopFuture<Lasertime> {
         guard let idString = req.parameters.get("id") else {
@@ -110,7 +119,7 @@ struct LasertimeController {
             "cutTime": lasertime.cutTime!.description,   // force unwrap because value is guaranteed to be set from the `if`
             "descript": lasertime.descript ?? "",
             "userID": lasertime.userID!.description,
-            "paid": lasertime.paid?.description ?? "false",
+            "paid": lasertime.paid?.description ?? "",
             "duration": lasertime.duration.description
         ]}
     }

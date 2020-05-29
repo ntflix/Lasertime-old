@@ -9,21 +9,20 @@ import Fluent
 import Vapor
 
 struct UserController {
-    func index(req: Request) throws -> EventLoopFuture<[User]> {
+    func index(req: Request) throws -> EventLoopFuture<[[String: String]]> {
         //         returns all users with all details (except password hash). only for admins.
         return User.query(on: req.db).all().mapEach { user in
-            User(
-                id: user.id!,
-                username: user.username,
-                password: "",
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName
-            )   //manually mapping to remove password
+            [
+                "id": user.id!.description,
+                "username": user.username,
+                "email": user.email ?? "",
+                "firstName": user.firstName,
+                "lastName": user.lastName ?? ""
+            ]   //manually mapping to remove password
         }
     }
     
-    func adminGetUser(req: Request) throws -> EventLoopFuture<User> {
+    func adminGetUser(req: Request) throws -> EventLoopFuture<[String: String]> {
         guard let username = req.parameters.get("username") else {  // cannot use traditional auth as it is an admin and not the user themselves
             return req.eventLoop.makeFailedFuture(FluentError.missingField(name: "username"))
         }
@@ -32,14 +31,13 @@ struct UserController {
             .first()
             .unwrap(or: Abort(.notFound)) // will throw if no user exists
             .map { user in
-                User(
-                    id: user.id!,
-                    username: user.username,
-                    password: "", // manually mapping in order to remove password
-                    email: user.email ?? "",
-                    firstName: user.firstName,
-                    lastName: user.lastName ?? ""
-                )
+                [
+                    "id": user.id!.description,
+                    "username": user.username,
+                    "email": user.email ?? "",
+                    "firstName": user.firstName,
+                    "lastName": user.lastName ?? ""
+                ]
         }
     }
     

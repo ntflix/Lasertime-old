@@ -9,37 +9,48 @@ import Fluent
 import Vapor
 
 struct AdminController {
-    func index(req: Request) throws -> EventLoopFuture<[Admin]> {
+    func index(req: Request) throws -> EventLoopFuture<[[String: String]]> {
 //         returns all admins with all details (except password hash). only for testing/development.
         if (req.application.environment == .development) || (req.application.environment == .testing) {
             return Admin.query(on: req.db).all().mapEach { admin in
-                Admin(
-                    id: admin.id!,
-                    password: "",
-                    email: admin.email
-                )   //manually mapping to remove password
+                [
+                    "id": admin.id!.description,
+                    "email": admin.email
+                ]
             }
         }
         
         return req.eventLoop.makeFailedFuture(Abort(.badRequest))
     }
     
-    func getAdmin(req: Request) throws -> EventLoopFuture<Admin> {
+    func getAdmin(req: Request) throws -> EventLoopFuture<[String: String]> {
         let admin = try req.auth.require(Admin.self)      // checks if email is provided, safely unwraps it
         return Admin.find(admin.id!, on: req.db)
             .unwrap(or: Abort(.notFound))
-            .map {
-                return $0
+            .map { admin in
+                [
+                    "id": admin.id!.description,
+                    "email": admin.email
+                ]
         }
     }
 
-    func create(req: Request) throws -> EventLoopFuture<[String]> {
+    func create(req: Request) throws -> EventLoopFuture<[String: String]> {
         let admin = try req.content.decode(Admin.self)
-        admin.password = try Bcrypt.hash(admin.password)
 
+        do {
+            if admin.password.count < 8 {
+                return req.eventLoop.makeFailedFuture(Abort(.custom(code: 502, reasonPhrase: "Password must be at least 8 characters")))
+            }
+            admin.password = try Bcrypt.hash(admin.password)
+        } catch {
+            /// bcrypt hashing failed
+            return req.eventLoop.makeFailedFuture(Abort(.badRequest))
+        }
+        
         return admin.save(on: req.db).map {[
-            admin.email,
-            admin.id!.uuidString
+            "email": admin.email,
+            "id": admin.id!.uuidString
         ]}
     }
     
