@@ -6,7 +6,7 @@ This is the RESTful API layer between the [MySQL Server](https://github.com/ntfl
 
 ## Example usage
 ```sh
-docker run -d -p8080:8080 -e DATABASE_HOST="dev" -e DATABASE_PASSWORD="epicpassword123" fozflow/lasertime:1.0
+docker run -d -p8080:8080 -e DATABASE_HOST="dev" -e DATABASE_PASSWORD="epicpassword123" fozflow/lasertime:latest
 ```
 
 ## Environment variables 🌈
