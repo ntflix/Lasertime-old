@@ -1,9 +1,8 @@
 # Lasertime 📄
 ### RESTful API to log and access laser time for users of the Space 🛠
 
-## Please access the complete documentation [here](https://docs.api.lasertime.iron59.co.uk).
-
 ## API Reference
+### Full API Documentation is [here](https://docs.api.lasertime.iron59.co.uk).
 The Lasertime API is organized around [REST](https://en.wikipedia.org/wiki/Representational_State_Transfer).
 The API accepts JSON, multipart, and XML request bodies, returns JSON response bodies, and uses standard [HTTP response codes](https://httpstatuses.com) and authentication.
 
@@ -31,3 +30,20 @@ Name | Description | Example | Default value
 `DATABASE_USERNAME` | Username of the MySQL user | `gary` | `root`
 `DATABASE_PASSWORD` | Password for said user | `mmmm cheese on toast` | `password`
 `DATABASE_NAME` | Name of the database for lasertime | `worm_on_a_string` | `laser`
+
+
+# Why Swift? 👀
+* Fast growing, hugely popular language 😍
+* Backed by Apple and open sourced 🔓
+* Modern 🎂
+* Ultra safe ⛑
+* Super fast 🏎
+* You can also use emojis as variable names (lol):
+```swift
+let 🧃 = "apple juice 🥰"
+print("I love " + 🧃)
+```
+Output:
+```
+I love apple juice 🥰
+```

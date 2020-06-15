@@ -10,7 +10,6 @@ import Vapor
 
 struct UserController {
     func index(req: Request) throws -> EventLoopFuture<[[String: String]]> {
-        //         returns all users with all details (except password hash). only for admins.
         return User.query(on: req.db).all().mapEach { user in
             [
                 "id": user.id!.description,
@@ -86,7 +85,7 @@ struct UserController {
             return req.eventLoop.makeFailedFuture(FluentError.missingField(name: missingItem!))
         }
         
-        /// Done checking. User supplied details seem OK 👍
+        // Done checking. User supplied details seem OK here
         
         do {
             if user.password.count < 8 {
@@ -105,17 +104,15 @@ struct UserController {
             ]}
     }
     
-    /*
+    
     func update(req: Request) throws -> EventLoopFuture<[String: String]> {
-        let user = try req.auth.require(User.self)
-        let newUser = try req.content.decode(User.self)
         
-        if let _ = newUser.password {
-            do {
-                user.password = try Bcrypt.hash(user.password)
-            } catch {
-                return req.eventLoop.makeFailedFuture(Abort(.badRequest))
-            }
+        let user = try req.auth.require(User.self)
+        
+        do {
+            user.password = try Bcrypt.hash(user.password)
+        } catch {
+            return req.eventLoop.makeFailedFuture(Abort(.badRequest))
         }
         
         return user.update(on: req.db).map {[
@@ -126,7 +123,6 @@ struct UserController {
             "lastName": user.lastName ?? ""
             ]}
     }
-    */
     
     func delete(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         let user = try req.auth.require(User.self)
