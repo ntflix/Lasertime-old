@@ -61,6 +61,10 @@ struct LasertimeController {
     }
     
     private func create(_ lasertime: Lasertime, req: Request) throws -> EventLoopFuture<[String: String]> {
+        if lasertime.duration < 0 {
+            return req.eventLoop.makeFailedFuture(Abort(.custom(code: 502, reasonPhrase: "Duration must be greater than or equal to 0 seconds")))
+        }
+        
         if let _ = lasertime.cutTime {
             // here, lasertime.cutTime is defined so there's no need to set it to something
         } else {    // if cutTime is not given it will set it to the current date/time

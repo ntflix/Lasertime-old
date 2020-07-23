@@ -16,6 +16,8 @@ func routes(_ app: Application) throws {
     //  Lasertime DB interaction layer
     let lasertimeController = LasertimeController()
     
+    //  Materials stuff
+    let materialController = MaterialController()
     
 // MARK: - User profile operations
     // Hello!
@@ -32,6 +34,8 @@ func routes(_ app: Application) throws {
     
 //    userProtected.delete("user", use: userController.delete)
     
+// MARK: - General operations
+    app.get("materials", use: materialController.index)
     
 // MARK: - Admin operations
     
@@ -65,6 +69,9 @@ func routes(_ app: Application) throws {
         
     }
     
+    /// Anyone should be able to:
+    ///     • view materials and prices       ✅
+    ///
     
     /// User should be able to:
     ///     • delete themself       🚦 on hold
