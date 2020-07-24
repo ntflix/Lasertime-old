@@ -95,7 +95,7 @@ struct UserController {
             user.password = try Bcrypt.hash(user.password)
         } catch {
             /// bcrypt hashing failed
-            return req.eventLoop.makeFailedFuture(Abort(.badRequest))
+            return req.eventLoop.makeFailedFuture(Abort(.internalServerError))
         }
         
         return user.save(on: req.db).map {[
@@ -104,26 +104,55 @@ struct UserController {
             ]}
     }
     
-    
+    /*
     func update(req: Request) throws -> EventLoopFuture<[String: String]> {
-        
-        let user = try req.auth.require(User.self)
-        
-        do {
-            user.password = try Bcrypt.hash(user.password)
-        } catch {
-            return req.eventLoop.makeFailedFuture(Abort(.badRequest))
+        let authenticatedUser = try req.auth.require(User.self)
+        let newUser = try req.content.decode(User.self)
+
+        if let userID = authenticatedUser.id {
+            return User.find(userID, on: req.db).flatMap { thisUser in
+                // found authenticated user in database
+                if let _ = thisUser {
+                    // user exists
+                    
+                    //modifying authenticated user's details
+                    thisUser?.username = newUser.username
+                    thisUser?.email = newUser.email
+                    thisUser?.firstName = newUser.firstName
+                    thisUser?.lastName = newUser.lastName
+                                        
+                    if newUser.password != "" {
+                        do {
+                            if newUser.password.count < 8 {
+                                // TODO: put password checking into its own function
+                                return req.eventLoop.makeFailedFuture(Abort(.custom(code: 502, reasonPhrase: "Password must be at least 8 characters")))
+                            }
+                            thisUser?.password = try Bcrypt.hash(newUser.password)
+                        } catch {
+                            /// bcrypt hashing failed
+                            return req.eventLoop.makeFailedFuture(Abort(.internalServerError))
+                        }
+                    }
+                    
+                    return thisUser!.update(on: req.db).map {
+                        [
+                            "username": thisUser!.username,
+                            "email": thisUser!.email ?? "",
+                            "id": thisUser!.id!.uuidString,
+                            "firstName": thisUser!.firstName,
+                            "lastName": thisUser!.lastName ?? ""
+                        ]
+                    }
+                }
+                return req.eventLoop.makeFailedFuture(Abort(.internalServerError))
+            }
+        } else {
+            return req.eventLoop.makeFailedFuture(FluentError.missingField(name: "id"))
         }
-        
-        return user.update(on: req.db).map {[
-            "username": user.username,
-            "email": user.email ?? "",
-            "id": user.id!.uuidString,
-            "firstName": user.firstName,
-            "lastName": user.lastName ?? ""
-            ]}
     }
-    
+    */
+     
+    /*
     func delete(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         let user = try req.auth.require(User.self)
         return User.find(user.id, on: req.db)
@@ -131,4 +160,5 @@ struct UserController {
             .flatMap { $0.delete(on: req.db) }
             .transform(to: .ok)
     }
+     */
 }

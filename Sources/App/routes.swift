@@ -57,6 +57,10 @@ func routes(_ app: Application) throws {
     adminProtected.post("admin", "users", use: userController.create)
     adminProtected.post("admin", "admins", use: adminController.create)
     
+    // Allow admins to create and update materials
+    adminProtected.post("admin", "materials", use: materialController.create)
+    adminProtected.patch("admin", "materials", use: materialController.update)
+    
 // MARK: - User lasertime operations
     // Users can retrieve and add their own lasertime logs
     userProtected.get("lasertime", use: lasertimeController.getUserLasertime)
@@ -75,10 +79,10 @@ func routes(_ app: Application) throws {
     
     /// User should be able to:
     ///     • delete themself       🚦 on hold
-    ///     • update their own details   🚦 on hold
+    ///     • update their own details   👮 either with admin approval or admin capability instead
     ///     • add laser log     ✅
     ///     • view their own laser logs     ✅
-    ///     • update laser log      🚦 on hold
+    ///     • update laser log      🧐 should implement for user or admin?
     
     /// Laser admins should be able to:
     ///     • view all laser logs       ✅
@@ -88,7 +92,9 @@ func routes(_ app: Application) throws {
     ///     • view any user's details (except password)   ✅
     ///     • add laser log in anyone's name    ✅
     ///     • create user       ✅
-    ///     • create admin ✅
+    ///     • create admin  ✅
+    ///     • create materials  ✅
+    ///     • update materials' prices  🚦 on hold
     
     /// The server must:
     ///     • enforce password requirements     🧩 not quite, just 8 chars for now
