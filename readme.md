@@ -1,4 +1,7 @@
 # Lasertime 📄
+
+### Note: this repo is outdated. See the [new project](https://github.com/ntflix/Lasertime) instead :)
+
 ### RESTful API to log and access laser time for users of the Space 🛠
 
 ## API Reference
